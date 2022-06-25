@@ -1,7 +1,6 @@
 library(ggplot2)
 datos<-read.csv("datos.txt",sep = " ",col.names = c("x","y"))
 
-
 #determinar el K(cluster)-experimentacion
 k=3
 cont_iter=0 #contador de iteraciones
@@ -54,10 +53,9 @@ while(cont_iter<max_iter){
   nombre<-paste("gr",cont_iter,".png",sep="")
   centroideX=data.frame(centroide,puntos)
   final<-merge(datos1,centroideX,by = "puntos")
-  grafica<-ggplot(datos,aes(x,y))+geom_point(size=1)+geom_point(data = centroide,color=2:4, size=3)
-  #grafica<-ggplot(final,aes(x.x,final$y.x))+geom_point(aes(final$x.y,final$y.y),size=1)+
-   # geom_point(data = centroide,color=2:4, size=3)
-  #+    geom_segment(aes(final$x.y,final$y.y,xend=final$x.x,yend=final$y.x))
+  colnames(final)<-c("puntos","ax","ay","bx","by")
+  grafica<-ggplot(final,aes(ax,ay,color=puntos))+geom_point(aes(bx,by),size=1)+
+    geom_point(aes(x=bx,y=by),size=5)+geom_segment(aes(x=ax,y=ay,xend=bx,yend=by))
   ggsave(grafica, file=nombre,width = 48, height =27, units = "cm")
   
 }
